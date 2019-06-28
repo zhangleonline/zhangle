@@ -1,0 +1,38 @@
+    2019-06-26  13:29
+
+		writer_by_zhangle 
+
+功能：完成类的封装+简单界面UI
+     主程序：QFYFanalyze_V1.0.py
+	数据读取类文件：QFYF_analyze_mainclass.py 实现数据读取以及多进程
+
+
+	类方法的说明： __init__(self):                        初始化一些需要用到的重复变量或者输出变量 以及 字典dict_process_log{}
+			load_log(self, filename):             载入一个日志文件,返回读取在内存的temp，按行读入
+			get_data_variable(self, temp_line):   承接上个函数的输出 查找我想要的变量值，给初始化中的变量赋值，并该函数有返回值（需要用到）
+			handle_one_log(self,root, x):         函数里面调用load_log以及get_data_variable两个函数，返回想要经过计算的矩阵信息（例如判断是否连续为0）返回值为多个变量
+			updateAllData(self,root,file_names_all): 开启多进程，多进程处理文件夹中所有文件，调用handle_one_log的值，将每个文件的重要信息值写入到初始化的字典dict_process_log{}
+			updateRoot(self,root,root_to_xls):     更新初始化变量存放的根目录的值
+			updateAttrData(self,x):                根据当前处理的log文件，将字典dict_process_log{}的值读取到初始化变量中
+			judge_Continuous_zero(self,list1, num_zero): 判断列表中是否连续为0
+			judge_gps_state(self,time_list1, nsats_list, num):  # 判断gps搜星是否正常  GPS包中 times变量>0的前提下， NSTATE变量>13 为正常，否则为不正常
+			judge_height_error(self,DA_list, A_list, list_CTUN_THO):  # 判断在DA保持41帧不变的情况下，如果之后的da与a的误差大于0.2则异常
+			cal_total_time(self,list1, list_time):
+			cal_frequency(self,list1):
+
+			judgeSensor_and_print(self,pd_statistical, x): 判断传感器是否异常，需要调用cal_total_time、cal_frequency、judge_height_error、judge_gps_state、judge_Continuous_zero
+									打印单个log的输出
+			plt(self,x);				画单个log的图
+	
+	主程序：  
+			slot_btn_chooseDir1(self):      #  设置输入路径槽函数
+			slot_btn_chooseDir2(self):    	#  设置输出路径槽函数
+			slot_btn_startTask(self):     	#  设置开始任务，读取根目录下的多个log文件名，并将根目录信息返回给类ProccessData，创建excel输出结构，调用updateAllData读入所有log信息写入字典
+								根据当前处理的log文件，调用类方法updateAttrData和judgeSensor_and_print以及画图方法plt(self,x)。
+		
+
+ 编程bug注意： 采用pyinstaller -F -w main.py  生成exe文件  (-w是为了不打开控制行窗口)
+		
+		exe文件执行时重复打开多个窗口的bug 原因：多进程引起，多进程开关 multiprocessing.freeze_support() 指令应该写在主程序中，避免出现在界面的槽函数调用的子函数中
+
+修改说明：（对比V1.0版本）增加了程序运行时间的显示

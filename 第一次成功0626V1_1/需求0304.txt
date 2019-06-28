@@ -1,0 +1,10 @@
+1、CTUN包里的 DA变量不变前提下第41帧数后 且在ctun中的THO变量>0.1，且 DA !=0前提下 计算|DA-A|>0.2 则该组标记为异常 ，绘制DA和A的曲线 绘制IMU中的ACCZ的曲线
+2、IMU1 IMU2 IMU3 中的每个包中的GYRZ和ACCZ 变量  超过30组保持该变量不变则判断异常
+3、MAG MAG2 MAG3 每个包中的magz 超过30组不更新则判断为异常  
+4、GPS包中 times变量>0的前提下， NSTATE变量>13 为正常，否则为不正常
+
+5、增加飞机id ACI T4
+6、增加飞控ID ACI T5
+7、飞行时间 单个日志MKF1 ARD==1 解锁  ，高电平时间 us
+8、RTK 中 SATS ==4后稳定在4 跳下降沿次数
+9、对mag包里的magx magy magz 三者求模并绘图
